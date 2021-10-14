@@ -20,15 +20,9 @@ class Game_Board:
         for count in range(10,21):
             game_board[0][count] = f'{count} '
 
-        # letters_to_numbers = {}
+    def show_board(self, board_name):
 
-        # for count in range(1,21):
-        #     letters_to_numbers[ascii_uppercase[count - 1]] = count
-        # # for player input conversion
-
-        # for rows in game_board:
-        #     for element in rows:
-        #         print(element, end = ' ')
-        #     print('')
-        # #print loop for game board
-
+        for rows in board_name:
+            for element in rows:
+                print(element, end = ' ')
+            print('')
