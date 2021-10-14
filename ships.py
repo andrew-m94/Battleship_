@@ -1,5 +1,5 @@
 class Ships:
 
-    def __init__(self):
+    def __init__(self, name, size):
         self.name = ''
-        self.type = ''
+        self.size = 2
