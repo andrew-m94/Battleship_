@@ -27,7 +27,7 @@ class Player:
         ship_three = Ships('battleship one', 4, 'B')
         self.ships.append(ship_three)
 
-        ship_four = Ships('battleship two', 4, 'B')
+        ship_four = Ships('battleship two', 4, 'b')
         self.ships.append(ship_four)
 
         ship_five = Ships('aircraft carrier', 5, '')
@@ -52,7 +52,10 @@ class Player:
 
     def place_ships(self):
 
-        print('When placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
+        print(f'\n{self.name} place your ships!')
+        input('Press enter to continue: ')
+
+        print('\nWhen placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
         self.hidden_board.show_board()
 
         for ship in self.ships:
@@ -69,7 +72,7 @@ class Player:
                         self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
                         column -= 1
                 self.hidden_board.show_board()
-                
+
             if orientation == 2:
                 if ship.size <= row:
                     for count in range(ship.size):
