@@ -1,1 +1,3 @@
-from game_board import Game_Board
+from play_field import Play_Field
+
+game_one = Play_Field()
