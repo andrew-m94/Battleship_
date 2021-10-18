@@ -79,4 +79,4 @@ class Player:
                         self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
                         row -= 1
         
-                self.hidden_board.show_board()     
+                self.hidden_board.show_board()
