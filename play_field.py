@@ -3,7 +3,8 @@ from player import Player
 class Play_Field:
 
     def __init__(self):
-        self.player = Player()
+        self.player_one = Player()
+        self.player_two = Player()
         self.run_game()
 
     def player_one_turn(self):
@@ -18,7 +19,8 @@ class Play_Field:
 
     def run_game(self):
         self.intro()
-        self.player.place_ships()
+        self.player_one.place_ships()
+        self.player_two.place_ships()
         self.round_of_play()
         self.display_winner()
 
