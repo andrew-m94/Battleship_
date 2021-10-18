@@ -15,7 +15,6 @@ class Player:
     def add_name(self):
         self.name = input('Enter a name for each player one at a time: ')
 
-
     def create_ships(self):
 
         ship_one = Ships('destroyer', 2, 'D')
@@ -30,7 +29,7 @@ class Player:
         ship_four = Ships('battleship two', 4, 'b')
         self.ships.append(ship_four)
 
-        ship_five = Ships('aircraft carrier', 5, '')
+        ship_five = Ships('aircraft carrier', 5, 'A')
         self.ships.append(ship_five)
 
     def letters_to_numbers(self, location):
@@ -49,7 +48,6 @@ class Player:
 
         return location
             
-
     def place_ships(self):
 
         print(f'\n{self.name} place your ships!')
