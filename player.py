@@ -65,18 +65,54 @@ class Player:
             row = converted_location[0]
             column = converted_location[1]
 
-            orientation = int(input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: '))
-            if orientation == 1:
-                if ship.size <= column:
-                    for count in range(ship.size):
-                        self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
-                        column -= 1
-                self.hidden_board.show_board()
+            error_check = True
+            while error_check == True:
+                orientation = input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
 
-            if orientation == 2:
-                if ship.size <= row:
-                    for count in range(ship.size):
-                        self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
-                        row -= 1
-        
-                self.hidden_board.show_board()
+                if int(orientation) == 1:
+                    if ship.size <= column:
+                        check_column = column
+
+                        for count in range(ship.size):
+
+                             if self.hidden_board.game_board[row][check_column] == '[ ]':
+                                check_column -= 1
+                                error_check = False
+                             else:
+                                 print('Another ship is in the way!\n')
+                                 error_check = True
+                                 break
+                        
+                        if error_check == False:
+                            for count in range(ship.size):
+                                self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                                column -= 1
+
+                            self.hidden_board.show_board()
+                    
+                    else:
+                        print('Your Ship does not fit there!')
+
+                elif int(orientation) == 2:
+                    if ship.size <= row:
+                        check_row = row
+
+                        for count in range(ship.size):
+                            
+                            if self.hidden_board.game_board[check_row][column] == '[ ]':
+                                check_row -= 1
+                                error_check = False
+                            else:
+                                print('Another ship is in the way!\n')
+                                error_check = True
+                                break
+                        
+                        if error_check == False:
+                            for count in range(ship.size):
+                                self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                                row -= 1
+
+                            self.hidden_board.show_board()
+
+                    else:
+                        print('Your Ship does not fit there!')
