@@ -34,6 +34,7 @@ class Play_Field:
         input('Press enter to continue: ')
 
         self.player_two.game_board.show_board()
+        print(f'{len(self.player_one.ships)} ships remaining!')
         attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
@@ -70,6 +71,7 @@ class Play_Field:
         input('Press enter to continue: ')
 
         self.player_one.game_board.show_board()
+        print(f'{len(self.player_one.ships)} ships remaining!')
         attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
