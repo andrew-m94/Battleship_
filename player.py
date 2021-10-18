@@ -39,7 +39,7 @@ class Player:
         for count in range(1,21):
             letters_to_numbers[ascii_uppercase[count - 1]] = count
 
-        location.split('')
+        location = list(location)
         location[0] = letters_to_numbers[location[0]]
         location[1] = int(location[1])
 
@@ -47,7 +47,6 @@ class Player:
             
 
     def place_ships(self):
-        letters_to_numbers = self.letters_to_numbers()
 
         print('When placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
         self.hidden_board.show_board()
@@ -59,16 +58,17 @@ class Player:
             row = converted_location[0]
             column = converted_location[1]
 
-            orientation = input ('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
+            orientation = int(input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: '))
             if orientation == 1:
                 if ship.size <= column:
                     for count in range(ship.size):
-                        self.hidden_board[row][column] = ship.symbol
+                        self.hidden_board.game_board[row][column] = ship.symbol
                         column - 1
 
             if orientation == 2:
                 if ship.size <= row:
                     for count in range(ship.size):
-                        self.hidden_board[row][column] = ship.symbol
+                        self.hidden_board.game_board[row][column] = ship.symbol
                         row - 1
-            
+        
+                self.hidden_board.show_board()     
