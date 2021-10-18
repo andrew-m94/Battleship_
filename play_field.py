@@ -25,8 +25,15 @@ class Play_Field:
         return location
 
     def player_one_turn(self):
+        round = 0
+
         print(f"{self.player_one.name}'s turn!")
         input('Press enter to continue: ')
+
+        if round > 0:
+            print('Heres a damage report since last turn!')
+            print(self.player_one.hidden_board.show_board())
+            input('Press enter to continue: ')
 
         self.player_two.game_board.show_board()
         attack = input('Enter a location ie "A1" to attack: ')
@@ -54,9 +61,14 @@ class Play_Field:
             self.player_two.game_board[row][column] = '[X]'
             self.player_two.game_board.show_board()
 
+        round += 0
 
     def player_two_turn(self):
         print(f"{self.player_two.name}'s turn!")
+        input('Press enter to continue: ')
+
+        print('Heres a damage report since last turn!')
+        print(self.player_two.hidden_board.show_board())
         input('Press enter to continue: ')
 
         self.player_one.game_board.show_board()
@@ -73,12 +85,16 @@ class Play_Field:
 
         else:
             ship_hit = self.player_one.hidden_board[row][column]
+
             for ship in self.player_one.ships:
+
                 if ship.symbol == ship_hit[1]:
                     ship.size -= 1
+
                     if ship.size == 0:
                         self.player_one.ships.remove(ship)
                         print(f"You sunk {self.player_one.name}'s {ship.name}")
+                        
                     else:
                         print(f"You hit {self.player_one.name}'s {ship.name}")
                     
