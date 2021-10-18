@@ -4,12 +4,17 @@ from string import ascii_uppercase
 
 class Player:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        self.name = ''
+        self.add_name()
         self.ships = []
         self.create_ships()
         self.game_board = Game_Board()
         self.hidden_board = Game_Board()
+
+    def add_name(self):
+        self.name = input('Enter a name for each player one at a time: ')
+
 
     def create_ships(self):
 
@@ -47,7 +52,23 @@ class Player:
         print('When placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
         self.hidden_board.show_board()
 
-        # for ship in self.ships:
-        #     location = input(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
-        #     converted_location = self.letters_to_numbers(location)
-        #     #in work
+        for ship in self.ships:
+            location = input(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
+            
+            converted_location = self.letters_to_numbers(location)
+            row = converted_location[0]
+            column = converted_location[1]
+
+            orientation = input ('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
+            if orientation == 1:
+                if ship.size <= column:
+                    for count in range(ship.size):
+                        self.hidden_board[row][column] = ship.symbol
+                        column - 1
+
+            if orientation == 2:
+                if ship.size <= row:
+                    for count in range(ship.size):
+                        self.hidden_board[row][column] = ship.symbol
+                        row - 1
+            
