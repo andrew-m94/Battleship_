@@ -87,19 +87,30 @@ class Play_Field:
     
         self.player_one.game_board.show_board()
 
-    def round_of_play(self):
-        self.player_one_turn()
-        self.player_two_turn()
+    def rounds_of_play(self):
+
+        while len(self.player_one.ships) > 0 and len(self.player_two.ships) > 0:
+            self.player_one_turn()
+
+            if len(self.player_two.ships) > 0:
+                self.player_two_turn()
 
     def run_game(self):
         self.intro()
         self.player_one.place_ships()
         self.player_two.place_ships()
-        self.round_of_play()
+        self.rounds_of_play()
         self.display_winner()
 
     def intro(self):
-        pass
+        print('\nWelcome to Battleship!')
+        print('Players will each place ships in the water and take turns attacking each other until either ' +
+        'player has no ships remaining.')
+        print('Have fun!\n')
 
     def display_winner(self):
-        pass
+        if len(self.player_two.ships) == 0:
+            print(f'{self.player_one.name} wins!')
+        
+        elif len(self.player_one.ships) == 0:
+            print(f'{self.player_two.name} wins!')
