@@ -25,15 +25,13 @@ class Play_Field:
         return location
 
     def player_one_turn(self):
-        round = 0
 
         print(f"{self.player_one.name}'s turn!")
         input('Press enter to continue: ')
 
-        if round > 0:
-            print('Heres a damage report since last turn!')
-            print(self.player_one.hidden_board.show_board())
-            input('Press enter to continue: ')
+        print('Heres a damage report since last turn!')
+        self.player_one.hidden_board.show_board()
+        input('Press enter to continue: ')
 
         self.player_two.game_board.show_board()
         attack = input('Enter a location ie "A1" to attack: ')
@@ -42,12 +40,13 @@ class Play_Field:
         row = converted_location[0]
         column = converted_location[1]
 
-        if self.player_two.hidden_board[row][column] == '[ ]':
-            self.player_two.hidden_board[row][column] = '[O]'
+        if self.player_two.hidden_board.game_board[row][column] == '[ ]':
+            self.player_two.hidden_board.game_board[row][column] = '[O]'
+            self.player_two.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
 
         else:
-            ship_hit = self.player_two.hidden_board[row][column]
+            ship_hit = self.player_two.hidden_board.game_board[row][column]
             for ship in self.player_two.ships:
                 if ship.symbol == ship_hit[1]:
                     ship.size -= 1
@@ -57,18 +56,17 @@ class Play_Field:
                     else:
                         print(f"You hit {self.player_two.name}'s {ship.name}")
                     
-            self.player_two.hidden_board[row][column] = '[X]'
-            self.player_two.game_board[row][column] = '[X]'
-            self.player_two.game_board.show_board()
-
-        round += 0
+            self.player_two.hidden_board.game_board[row][column] = '[X]'
+            self.player_two.game_board.game_board[row][column] = '[X]'
+            
+        self.player_two.game_board.show_board()
 
     def player_two_turn(self):
         print(f"{self.player_two.name}'s turn!")
         input('Press enter to continue: ')
 
         print('Heres a damage report since last turn!')
-        print(self.player_two.hidden_board.show_board())
+        self.player_two.hidden_board.show_board()
         input('Press enter to continue: ')
 
         self.player_one.game_board.show_board()
@@ -78,13 +76,13 @@ class Play_Field:
         row = converted_location[0]
         column = converted_location[1]
 
-        if self.player_one.hidden_board[row][column] == '[ ]':
-            self.player_one.hidden_board[row][column] = '[O]'
-            self.player_one.game_board[row][column] = '[O]'
+        if self.player_one.hidden_board.game_board[row][column] == '[ ]':
+            self.player_one.hidden_board.game_board[row][column] = '[O]'
+            self.player_one.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
 
         else:
-            ship_hit = self.player_one.hidden_board[row][column]
+            ship_hit = self.player_one.hidden_board.game_board[row][column]
 
             for ship in self.player_one.ships:
 
@@ -94,12 +92,12 @@ class Play_Field:
                     if ship.size == 0:
                         self.player_one.ships.remove(ship)
                         print(f"You sunk {self.player_one.name}'s {ship.name}")
-                        
+
                     else:
                         print(f"You hit {self.player_one.name}'s {ship.name}")
                     
-            self.player_one.hidden_board[row][column] = '[X]'
-            self.player_one.game_board[row][column] = '[X]'
+            self.player_one.hidden_board.game_board[row][column] = '[X]'
+            self.player_one.game_board.game_board[row][column] = '[X]'
     
         self.player_one.game_board.show_board()
 
@@ -122,7 +120,7 @@ class Play_Field:
         print('\nWelcome to Battleship!')
         print('Players will each place ships in the water and take turns attacking each other until either ' +
         'player has no ships remaining.')
-        print('Have fun!\n')
+        print('Have fun!')
 
     def display_winner(self):
         if len(self.player_two.ships) == 0:
