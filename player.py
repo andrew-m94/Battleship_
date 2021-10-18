@@ -40,7 +40,11 @@ class Player:
             letters_to_numbers[ascii_uppercase[count - 1]] = count
 
         location = list(location)
-        location[0] = letters_to_numbers[location[0]]
+        
+        if len(location) > 2:
+            location[1] = f'{location[1]}{location[2]}'
+        
+        location[0] = letters_to_numbers[location[0].upper()]
         location[1] = int(location[1])
 
         return location
@@ -62,13 +66,14 @@ class Player:
             if orientation == 1:
                 if ship.size <= column:
                     for count in range(ship.size):
-                        self.hidden_board.game_board[row][column] = ship.symbol
-                        column - 1
-
+                        self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                        column -= 1
+                self.hidden_board.show_board()
+                
             if orientation == 2:
                 if ship.size <= row:
                     for count in range(ship.size):
-                        self.hidden_board.game_board[row][column] = ship.symbol
-                        row - 1
+                        self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                        row -= 1
         
                 self.hidden_board.show_board()     
