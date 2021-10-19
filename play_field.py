@@ -1,11 +1,11 @@
+from human import Human
+from ai import Ai
 from player import Player
 from string import ascii_uppercase
 
 class Play_Field:
 
     def __init__(self):
-        self.player_one = Player()
-        self.player_two = Player()
         self.run_game()
 
     def letters_to_numbers(self, location):
@@ -23,6 +23,29 @@ class Play_Field:
         location[1] = int(location[1])
 
         return location
+
+    def game_mode(self):
+        choices = ['1','2','3']
+        choice = 0
+
+        print('1. Human vs Human (Grab a friend)')
+        print('2. Human vs Ai (Can you beat a computer?)')
+        print('3. Ai vs Ai (sit back and watch a game)')
+
+        while choice not in choices:
+            choice = input ('Choose your game mode: ')
+
+        if choice == 1:
+            player_one = Human()
+            player_two = Human()
+
+        if choice == 2:
+            player_one = Human()
+            player_two = Ai('Admiral AI')
+
+        if choice == 3:
+            player_one = Ai('Admiral AI')
+            player_two = Ai('Admiral Ackbar')
 
     def player_one_turn(self):
 
@@ -123,6 +146,7 @@ class Play_Field:
 
     def run_game(self):
         self.intro()
+        self.game_mode
         self.player_one.place_ships()
         self.player_two.place_ships()
         self.rounds_of_play()
