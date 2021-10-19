@@ -7,8 +7,13 @@ class Ai(Player):
         self.name = name
         self.miss = 0
         self.hit = 0
+        self.row = 0
+        self.column = 0
+        self.choice = 0
+        self.choice_list = [1,2,3,4,5]
 
     def place_ships(self):
+
         print(f'\n{self.name} is going to place their ships!')
         input('Press enter to continue: ')
 
@@ -44,9 +49,4 @@ class Ai(Player):
     def auto_orientation(self):
         orientation = random.randrange(1,3)
 
-        return orientation
-
-    def target_mode(self, misses, hits, location):
-        pass
-        #1basic
-        #2focused
+        return str(orientation)
