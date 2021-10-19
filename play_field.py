@@ -79,22 +79,38 @@ class Play_Field:
             self.player_two.hidden_board.game_board[row][column] = '[O]'
             self.player_two.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
+            
+            if self.player_one == Ai:
+                self.player_one.miss += 1
 
         else:
             ship_hit = self.player_two.hidden_board.game_board[row][column]
+
             for ship in self.player_two.ships:
+
                 if ship.symbol == ship_hit[1]:
                     ship.size -= 1
+
                     if ship.size == 0:
                         self.player_two.ships.remove(ship)
                         print(f"You sunk {self.player_two.name}'s {ship.name}")
+
+                        if self.player_one == Ai:
+                            self.player_one.miss = 0
+                            self.player_one.hit = 0
+
                     else:
                         print(f"You hit {self.player_two.name}'s {ship.name}")
+
+                        if self.player_one == Ai:
+                            self.player_one.hit = 0
                     
             self.player_two.hidden_board.game_board[row][column] = '[X]'
             self.player_two.game_board.game_board[row][column] = '[X]'
             
         self.player_two.game_board.show_board()
+        if self.player_one == Ai:
+            self.player_one.target_mode(self.player_one.miss, self.player_one.hit, attack)
 
     def player_two_turn(self):
         print(f"{self.player_two.name}'s turn!")
@@ -126,6 +142,9 @@ class Play_Field:
             self.player_one.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
 
+            if self.player_two == Ai:
+                self.player_two.miss += 1
+
         else:
             ship_hit = self.player_one.hidden_board.game_board[row][column]
 
@@ -138,15 +157,23 @@ class Play_Field:
                         self.player_one.ships.remove(ship)
                         print(f"You sunk {self.player_one.name}'s {ship.name}")
 
+                        if self.player_two == Ai:
+                            self.player_two.miss = 0
+                            self.player_two.hit = 0
+
                     else:
                         print(f"You hit {self.player_one.name}'s {ship.name}")
+                        
+                        if self.player_two == Ai:
+                            self.player_two.hit = 0
                     
             self.player_one.hidden_board.game_board[row][column] = '[X]'
             self.player_one.game_board.game_board[row][column] = '[X]'
-    
+        
         self.player_one.game_board.show_board()
 
-    def ai_attack_pattern(self):
+        if self.player_two == Ai:
+            self.player_two.target_mode(self.player_two.miss, self.player_two.hit, attack)
 
     def rounds_of_play(self):
 
