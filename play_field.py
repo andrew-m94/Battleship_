@@ -1,4 +1,5 @@
-from Battleship.game_board import Game_Board
+from random import randrange
+from game_board import Game_Board
 from human import Human
 from ai import Ai
 from player import Player
@@ -38,15 +39,15 @@ class Play_Field:
         while choice not in choices:
             choice = input ('Choose your game mode: ')
 
-        if choice == 1:
+        if choice == '1':
             self.player_one = Human()
             self.player_two = Human()
 
-        if choice == 2:
+        if choice == '2':
             self.player_one = Human()
             self.player_two = Ai('Admiral AI')
 
-        if choice == 3:
+        if choice == '3':
             self.player_one = Ai('Admiral AI')
             self.player_two = Ai('Admiral Ackbar')
 
@@ -60,16 +61,13 @@ class Play_Field:
         input('Press enter to continue: ')
 
         self.player_two.game_board.show_board()
-        print(f'{len(self.player_one.ships)} ships remaining!')
+        print(f'{len(self.player_two.ships)} ships remaining!')
 
         user_input_options = self.player_one.generate_user_options()
         attack = 'X'
 
         while attack not in user_input_options:
-            if self.player_one == Human:
-                attack = input('Enter a location ie "A1" to attack: ')
-            else:
-                attack = self.player_one.auto_array_pick()
+            attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
@@ -79,9 +77,6 @@ class Play_Field:
             self.player_two.hidden_board.game_board[row][column] = '[O]'
             self.player_two.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
-            
-            if self.player_one == Ai:
-                self.player_one.miss += 1
 
         else:
             ship_hit = self.player_two.hidden_board.game_board[row][column]
@@ -95,22 +90,13 @@ class Play_Field:
                         self.player_two.ships.remove(ship)
                         print(f"You sunk {self.player_two.name}'s {ship.name}")
 
-                        if self.player_one == Ai:
-                            self.player_one.miss = 0
-                            self.player_one.hit = 0
-
                     else:
                         print(f"You hit {self.player_two.name}'s {ship.name}")
-
-                        if self.player_one == Ai:
-                            self.player_one.hit = 0
                     
             self.player_two.hidden_board.game_board[row][column] = '[X]'
             self.player_two.game_board.game_board[row][column] = '[X]'
             
         self.player_two.game_board.show_board()
-        if self.player_one == Ai:
-            self.player_one.target_mode(self.player_one.miss, self.player_one.hit, attack)
 
     def player_two_turn(self):
         print(f"{self.player_two.name}'s turn!")
@@ -127,11 +113,7 @@ class Play_Field:
         attack = 'X'
         
         while attack not in user_input_options:
-
-            if self.player_two == Human:
-                attack = input('Enter a location ie "A1" to attack: ')
-            else:
-                attack = self.player_two.auto_array_pick()
+            attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
@@ -141,9 +123,6 @@ class Play_Field:
             self.player_one.hidden_board.game_board[row][column] = '[O]'
             self.player_one.game_board.game_board[row][column] = '[O]'
             print('Attack missed!')
-
-            if self.player_two == Ai:
-                self.player_two.miss += 1
 
         else:
             ship_hit = self.player_one.hidden_board.game_board[row][column]
@@ -157,23 +136,144 @@ class Play_Field:
                         self.player_one.ships.remove(ship)
                         print(f"You sunk {self.player_one.name}'s {ship.name}")
 
-                        if self.player_two == Ai:
-                            self.player_two.miss = 0
-                            self.player_two.hit = 0
-
                     else:
                         print(f"You hit {self.player_one.name}'s {ship.name}")
                         
                         if self.player_two == Ai:
-                            self.player_two.hit = 0
+                            self.player_two.hit += 1
                     
             self.player_one.hidden_board.game_board[row][column] = '[X]'
             self.player_one.game_board.game_board[row][column] = '[X]'
         
         self.player_one.game_board.show_board()
 
-        if self.player_two == Ai:
-            self.player_two.target_mode(self.player_two.miss, self.player_two.hit, attack)
+    def ai_one_turn(self):
+        print(f"{self.player_one.name}'s turn!")
+        input('Press enter to continue: ')
+
+        self.player_two.game_board.show_board()
+        print(f'{len(self.player_two.ships)} ships remaining!')
+
+        if self.player_one.hit > 0:
+
+            if self.player_one.choice == 0:
+                element = randrange(0,len(self.player_one.choice_list))
+                self.player_one.choice = self.player_one.choice_list[element]
+
+            if self.player_one.choice == 1:
+                self.player_one.row += 1
+                 
+            elif self.player_one.choice == 2:
+                self.player_one.row -= 1
+
+            elif self.player_one.choice == 3:
+                self.player_one.column += 1
+
+            elif self.player_one.choice == 4:
+                self.player_one.column -= 1
+                
+
+        else:
+            self.player_one.row, self.player_one.column = randrange(1,21)
+
+        if self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column] == '[ ]':
+            self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column] = '[O]'
+            self.player_two.game_board.game_board[self.player_one.row][self.player_one.column] = '[O]'
+            print('Attack missed!')
+            
+            if self.hit > 1:
+                self.player_one.choice_list.remove(self.player_one.choice)
+                self.player_one.choice = 0
+
+        else:
+            ship_hit = self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column]
+
+            for ship in self.player_two.ships:
+
+                if ship.symbol == ship_hit[1]:
+                    ship.size -= 1
+
+                    if ship.size == 0:
+                        self.player_two.ships.remove(ship)
+                        print(f"You sunk {self.player_two.name}'s {ship.name}")
+
+                        self.player_one.hit = 0
+                        self.player_one.choice = 0
+                        self.player_one.choice_list = [1,2,3,4,5]
+
+                    else:
+                        print(f"You hit {self.player_two.name}'s {ship.name}")
+
+                        self.player_one.hit += 1
+                    
+            self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column] = '[X]'
+            self.player_two.game_board.game_board[self.player_one.row][self.player_one.column] = '[X]'
+            
+        self.player_two.game_board.show_board()
+
+    def ai_two_turn(self):
+        print(f"{self.player_two.name}'s turn!")
+        input('Press enter to continue: ')
+
+        self.player_one.game_board.show_board()
+        print(f'{len(self.player_one.ships)} ships remaining!')
+
+        if self.player_two.hit > 0:
+
+            if self.player_two.choice == 0:
+                element = randrange(0,len(self.player_two.choice_list))
+                self.player_two.choice = self.player_two.choice_list[element]
+
+            if self.player_two.choice == 1:
+                self.player_two.row += 1
+                 
+            elif self.player_two.choice == 2:
+                self.player_two.row -= 1
+
+            elif self.player_two.choice == 3:
+                self.player_two.column += 1
+
+            elif self.player_two.choice == 4:
+                self.player_two.column -= 1
+                
+
+        else:
+            self.player_two.row, self.player_two.column = randrange(1,21)
+
+        if self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column] == '[ ]':
+            self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column] = '[O]'
+            self.player_one.game_board.game_board[self.player_two.row][self.player_two.column] = '[O]'
+            print('Attack missed!')
+            
+            if self.hit > 1:
+                self.player_two.choice_list.remove(self.player_two.choice)
+                self.player_two.choice = 0
+
+        else:
+            ship_hit = self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column]
+
+            for ship in self.player_one.ships:
+
+                if ship.symbol == ship_hit[1]:
+                    ship.size -= 1
+
+                    if ship.size == 0:
+                        self.player_one.ships.remove(ship)
+                        print(f"You sunk {self.player_one.name}'s {ship.name}")
+
+                        self.player_two.hit = 0
+                        self.player_two.choice = 0
+                        self.player_two.choice_list = [1,2,3,4,5]
+
+                    else:
+                        print(f"You hit {self.player_one.name}'s {ship.name}")
+
+                        self.player_two.hit += 1
+                    
+            self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column] = '[X]'
+            self.player_one.game_board.game_board[self.player_two.row][self.player_two.column] = '[X]'
+            
+        self.player_one.game_board.show_board()
 
     def rounds_of_play(self):
 
@@ -185,7 +285,7 @@ class Play_Field:
 
     def run_game(self):
         self.intro()
-        self.game_mode
+        self.game_mode()
         self.player_one.place_ships()
         self.player_two.place_ships()
         self.rounds_of_play()
