@@ -174,14 +174,15 @@ class Play_Field:
                 
 
         else:
-            self.player_one.row, self.player_one.column = randrange(1,21)
+            self.player_one.row = randrange(1,21)
+            self.player_one.column = randrange(1,21)
 
         if self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column] == '[ ]':
             self.player_two.hidden_board.game_board[self.player_one.row][self.player_one.column] = '[O]'
             self.player_two.game_board.game_board[self.player_one.row][self.player_one.column] = '[O]'
             print('Attack missed!')
             
-            if self.hit > 1:
+            if self.player_one.hit > 1:
                 self.player_one.choice_list.remove(self.player_one.choice)
                 self.player_one.choice = 0
 
@@ -238,14 +239,15 @@ class Play_Field:
                 
 
         else:
-            self.player_two.row, self.player_two.column = randrange(1,21)
+            self.player_two.row = randrange(1,21)
+            self.player_two.column = randrange(1,21)
 
         if self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column] == '[ ]':
             self.player_one.hidden_board.game_board[self.player_two.row][self.player_two.column] = '[O]'
             self.player_one.game_board.game_board[self.player_two.row][self.player_two.column] = '[O]'
             print('Attack missed!')
             
-            if self.hit > 1:
+            if self.player_two.hit > 1:
                 self.player_two.choice_list.remove(self.player_two.choice)
                 self.player_two.choice = 0
 
@@ -278,10 +280,19 @@ class Play_Field:
     def rounds_of_play(self):
 
         while len(self.player_one.ships) > 0 and len(self.player_two.ships) > 0:
-            self.player_one_turn()
+
+            if isinstance(self.player_one, Ai) == True:
+                self.ai_one_turn()
+
+            else:
+                self.player_one_turn()
 
             if len(self.player_two.ships) > 0:
-                self.player_two_turn()
+
+                if isinstance(self.player_two, Ai) == True:
+                    self.ai_two_turn()
+                else:
+                    self.player_two_turn()
 
     def run_game(self):
         self.intro()
