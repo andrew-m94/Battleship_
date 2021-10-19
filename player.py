@@ -61,7 +61,7 @@ class Player:
             element += 1
 
         return user_input_options
-        
+
     def place_ships(self):
 
         print(f'\n{self.name} place your ships!')
@@ -70,8 +70,19 @@ class Player:
         print('\nWhen placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
         self.hidden_board.show_board()
 
-        for ship in self.ships:
-            location = input(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
+        user_input_options = self.generate_user_options
+        location = 'X' #not in user_input_options
+
+        while location.upper() not in user_input_options:
+            for ship in self.ships:
+
+                while location.upper() not in user_input_options:
+                    location = input(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
+                    
+                while orientation != 1 and orientation != 2:
+                    orientation = input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
+
+                self.validate_placement(location, orientation, ship)
 
     def validate_placement(self, location, ship):
             

@@ -35,7 +35,12 @@ class Play_Field:
 
         self.player_two.game_board.show_board()
         print(f'{len(self.player_one.ships)} ships remaining!')
-        attack = input('Enter a location ie "A1" to attack: ')
+
+        user_input_options = self.player_one.generate_user_options()
+        attack = 'X'
+
+        while attack not in user_input_options:
+            attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
@@ -72,7 +77,12 @@ class Play_Field:
 
         self.player_one.game_board.show_board()
         print(f'{len(self.player_one.ships)} ships remaining!')
-        attack = input('Enter a location ie "A1" to attack: ')
+
+        user_input_options = self.player_two.generate_user_options()
+        attack = 'X'
+        
+        while attack not in user_input_options:
+            attack = input('Enter a location ie "A1" to attack: ')
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
