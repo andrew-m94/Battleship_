@@ -59,6 +59,8 @@ class Player:
         element = 0
         numbers = 1
 
+        return user_input_options
+
     def place_ships(self):
         pass
 
