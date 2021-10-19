@@ -5,6 +5,8 @@ class Ai(Player):
     def __init__(self, name):
         super().__init__()
         self.name = name
+        self.miss = 0
+        self.hit = 0
 
     def place_ships(self):
         print(f'\n{self.name} is going to place their ships!')
@@ -43,3 +45,8 @@ class Ai(Player):
         orientation = random.randrange(1,3)
 
         return orientation
+
+    def target_mode(self, misses, hits, location):
+        pass
+        #1basic
+        #2focused
