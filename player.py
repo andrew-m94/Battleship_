@@ -1,6 +1,7 @@
 from game_board import Game_Board
 from ships import Ships
 from string import ascii_uppercase
+from string import ascii_lowercase
 
 class Player:
 
@@ -60,6 +61,16 @@ class Player:
             numbers = 1
             element += 1
 
+        element = 0
+        numbers = 1
+
+        for letter in ascii_lowercase[0:20]:
+            for count in range (1,21):
+                user_input_options.append(f'{ascii_lowercase[element]}{numbers}')
+                numbers += 1
+            numbers = 1
+            element += 1
+
         return user_input_options
 
     def place_ships(self):
@@ -70,74 +81,79 @@ class Player:
         print('\nWhen placing ships, the ship will fill the spaces to the left (Horizontal) or above (vertical)')
         self.hidden_board.show_board()
 
-        user_input_options = self.generate_user_options
-        location = 'X' #not in user_input_options
+        user_input_options = self.generate_user_options()
+        
+        for ship in self.ships:
+            location = 'X'
 
-        while location.upper() not in user_input_options:
-            for ship in self.ships:
+            while location not in user_input_options:
+                orientation = 0
 
-                while location.upper() not in user_input_options:
+                while location not in user_input_options:
                     location = input(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
-                    
-                while orientation != 1 and orientation != 2:
+
+                while orientation != '1' and orientation != '2':
                     orientation = input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
 
-                self.validate_placement(location, orientation, ship)
+                location = self.validate_placement(location, orientation, ship)
+                if location == None:
+                    location = 'A1'
 
-    def validate_placement(self, location, ship):
+    def validate_placement(self, location, orientation, ship):
             
         converted_location = self.letters_to_numbers(location)
         row = converted_location[0]
         column = converted_location[1]
+        #Converts user input. A1 = 1 1, B10 = 2 10, etc for array call 
 
-        error_check = True
-        while error_check == True:
-            orientation = input('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
+        if int(orientation) == 1:
 
-            if int(orientation) == 1:
-                if ship.size <= column:
-                        check_column = column
+            if ship.size <= column:
+                check_column = column
 
-                for count in range(ship.size):
+            else:
+                print('Your Ship does not fit there!')
+                location = 'X'
+                return location
 
-                        if self.hidden_board.game_board[row][check_column] == '[ ]':
-                            check_column -= 1
-                            error_check = False
-                        else:
-                            print('Another ship is in the way!\n')
-                            error_check = True
-                            break
-                        
-                if error_check == False:
-                    for count in range(ship.size):
-                        self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
-                        column -= 1
+            for count in range(ship.size):
 
-                    self.hidden_board.show_board()
+                    if self.hidden_board.game_board[row][check_column] == '[ ]':
+                        check_column -= 1
+                        error_check = False
+                    else:
+                        print('Another ship is in the way!')
+                        location = 'X'
+                        return location
                     
-                else:
-                    print('Your Ship does not fit there!')
+            for count in range(ship.size):
+                self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                column -= 1
 
-            elif int(orientation) == 2:
-                if ship.size <= row:
-                    check_row = row
+            self.hidden_board.show_board()
 
-                    for count in range(ship.size):
-                            
-                        if self.hidden_board.game_board[check_row][column] == '[ ]':
-                            check_row -= 1
-                            error_check = False
-                        else:
-                            print('Another ship is in the way!\n')
-                            error_check = True
-                            break
+        elif int(orientation) == 2:
+
+            if ship.size <= row:
+                check_row = row
+            
+            else:
+                print('Your Ship does not fit there!')
+                location = 'X'
+                return location
+
+            for count in range(ship.size):
                         
-                    if error_check == False:
-                        for count in range(ship.size):
-                            self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
-                            row -= 1
-
-                        self.hidden_board.show_board()
+                if self.hidden_board.game_board[check_row][column] == '[ ]':
+                        check_row -= 1
 
                 else:
-                    print('Your Ship does not fit there!')
+                        print('Another ship is in the way!')
+                        location = 'X'
+                        return location
+
+            for count in range(ship.size):
+                self.hidden_board.game_board[row][column] = f'[{ship.symbol}]'
+                row -= 1
+
+            self.hidden_board.show_board()
