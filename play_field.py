@@ -162,17 +162,33 @@ class Play_Field:
 
             if self.player_one.choice == 1:
                 self.player_one.row += 1
-                 
+
+                if self.player_one.row == 21:
+                    self.player_one.row -= 1
+                    self.player_one.choice = 2
+                
             elif self.player_one.choice == 2:
                 self.player_one.row -= 1
+
+                if self.player_one.row == 0:
+                    self.player_one.row += 1
+                    self.player_one.choice = 3
 
             elif self.player_one.choice == 3:
                 self.player_one.column += 1
 
+                if self.player_one.column == 21:
+                    self.player_one.row -= 1
+                    self.player_one.choice = 4
+
             elif self.player_one.choice == 4:
                 self.player_one.column -= 1
-                
 
+                if self.player_one.column == 0:
+                    self.player_one.row += 1
+                    self.player_one.choice = 1
+                    self.player_one.row += 1
+                
         else:
             self.player_one.row = randrange(1,21)
             self.player_one.column = randrange(1,21)
@@ -182,7 +198,25 @@ class Play_Field:
             self.player_two.game_board.game_board[self.player_one.row][self.player_one.column] = '[O]'
             print('Attack missed!')
             
-            if self.player_one.hit > 1:
+            if self.player_one.hit > 0:
+
+                if self.player_one.choice == 1:
+                    for count in range(self.player_one.hit):
+                        self.player_one.row -= 1
+                 
+                elif self.player_one.choice == 2:
+                    for count in range(self.player_one.hit):
+                        self.player_one.row += 1
+
+                elif self.player_one.choice == 3:
+                    for count in range(self.player_one.hit):
+                        self.player_one.column -= 1
+
+                elif self.player_one.choice == 4:
+                    for count in range(self.player_one.hit):
+                        self.player_one.column += 1
+
+                self.player_one.hit = 1
                 self.player_one.choice_list.remove(self.player_one.choice)
                 self.player_one.choice = 0
 
@@ -227,17 +261,33 @@ class Play_Field:
 
             if self.player_two.choice == 1:
                 self.player_two.row += 1
-                 
+
+                if self.player_two.row == 21:
+                    self.player_two.row -= 1
+                    self.player_two.choice = 2
+                
             elif self.player_two.choice == 2:
                 self.player_two.row -= 1
+
+                if self.player_two.row == 0:
+                    self.player_two.row += 1
+                    self.player_two.choice = 3
 
             elif self.player_two.choice == 3:
                 self.player_two.column += 1
 
+                if self.player_two.column == 21:
+                    self.player_two.row -= 1
+                    self.player_two.choice = 4
+
             elif self.player_two.choice == 4:
                 self.player_two.column -= 1
-                
 
+                if self.player_two.column == 0:
+                    self.player_two.row += 1
+                    self.player_two.choice = 1
+                    self.player_two.row += 1
+                
         else:
             self.player_two.row = randrange(1,21)
             self.player_two.column = randrange(1,21)
@@ -247,7 +297,25 @@ class Play_Field:
             self.player_one.game_board.game_board[self.player_two.row][self.player_two.column] = '[O]'
             print('Attack missed!')
             
-            if self.player_two.hit > 1:
+            if self.player_two.hit > 0:
+
+                if self.player_two.choice == 1:
+                    for count in range(self.player_two.hit):
+                        self.player_two.row -= 1
+                 
+                elif self.player_two.choice == 2:
+                    for count in range(self.player_two.hit):
+                        self.player_two.row += 1
+
+                elif self.player_two.choice == 3:
+                    for count in range(self.player_two.hit):
+                        self.player_two.column -= 1
+
+                elif self.player_two.choice == 4:
+                    for count in range(self.player_two.hit):
+                        self.player_two.column += 1
+                
+                self.player_two.hit = 1
                 self.player_two.choice_list.remove(self.player_two.choice)
                 self.player_two.choice = 0
 
