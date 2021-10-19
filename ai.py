@@ -7,7 +7,29 @@ class Ai(Player):
         self.name = name
 
     def place_ships(self):
-        pass
+        print(f'\n{self.name} is going to place their ships!')
+        input('Press enter to continue: ')
+
+        self.hidden_board.show_board()
+        user_input_options = self.generate_user_options()
+        
+        for ship in self.ships:
+            location = 'X'
+
+            while location not in user_input_options:
+                orientation = 0
+
+                while location not in user_input_options:
+                    print(f'Enter a location (ie "A1") for your {ship.name} (size {ship.size}): ')
+                    location = self.auto_array_pick()
+
+                while orientation != '1' and orientation != '2':
+                    print('1: horizontal (to the left) \n2: vertical (up)\n Enter 1 or 2: ')
+                    orientation = self.auto_orientation()
+
+                location = self.validate_placement(location, orientation, ship)
+                if location == None:
+                    location = 'A1'
 
     def auto_array_pick(self):
         auto_array_options = self.generate_user_options()
