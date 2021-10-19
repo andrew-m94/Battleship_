@@ -1,3 +1,4 @@
+from Battleship.game_board import Game_Board
 from human import Human
 from ai import Ai
 from player import Player
@@ -6,6 +7,8 @@ from string import ascii_uppercase
 class Play_Field:
 
     def __init__(self):
+        self.player_one = None
+        self.player_two = None
         self.run_game()
 
     def letters_to_numbers(self, location):
@@ -36,16 +39,16 @@ class Play_Field:
             choice = input ('Choose your game mode: ')
 
         if choice == 1:
-            player_one = Human()
-            player_two = Human()
+            self.player_one = Human()
+            self.player_two = Human()
 
         if choice == 2:
-            player_one = Human()
-            player_two = Ai('Admiral AI')
+            self.player_one = Human()
+            self.player_two = Ai('Admiral AI')
 
         if choice == 3:
-            player_one = Ai('Admiral AI')
-            player_two = Ai('Admiral Ackbar')
+            self.player_one = Ai('Admiral AI')
+            self.player_two = Ai('Admiral Ackbar')
 
     def player_one_turn(self):
 
@@ -63,7 +66,10 @@ class Play_Field:
         attack = 'X'
 
         while attack not in user_input_options:
-            attack = input('Enter a location ie "A1" to attack: ')
+            if self.player_one == Human:
+                attack = input('Enter a location ie "A1" to attack: ')
+            else:
+                attack = self.player_one.auto_array_pick()
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
@@ -105,7 +111,11 @@ class Play_Field:
         attack = 'X'
         
         while attack not in user_input_options:
-            attack = input('Enter a location ie "A1" to attack: ')
+
+            if self.player_two == Human:
+                attack = input('Enter a location ie "A1" to attack: ')
+            else:
+                attack = self.player_two.auto_array_pick()
 
         converted_location = self.letters_to_numbers(attack)
         row = converted_location[0]
@@ -135,6 +145,8 @@ class Play_Field:
             self.player_one.game_board.game_board[row][column] = '[X]'
     
         self.player_one.game_board.show_board()
+
+    def ai_attack_pattern(self):
 
     def rounds_of_play(self):
 
